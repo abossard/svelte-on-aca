@@ -1,0 +1,10 @@
+RG=anbo-svelte-on-aca
+L=westeurope
+
+az group create -n $RG -l $L
+
+az deployment group create --resource-group $RG \
+    --template-file infrastructure/main.bicep \
+    --parameters doBuildContainerAppImage=false \
+    --parameters deployApps=false
+
