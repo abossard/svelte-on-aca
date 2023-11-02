@@ -106,6 +106,12 @@
 >
 	<a class="how-to-play" href="/sverdle/how-to-play">How to play</a>
 
+	<ul>
+		{#each data.headers as header}
+			<li>{header.key}: {header.value}</li>
+		{/each}
+	</ul>
+
 	<div class="grid" class:playing={!won} class:bad-guess={form?.badGuess}>
 		{#each Array.from(Array(6).keys()) as row (row)}
 			{@const current = row === i}

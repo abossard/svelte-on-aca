@@ -2,14 +2,22 @@ import { fail } from '@sveltejs/kit';
 import { Game } from './game';
 import type { PageServerLoad, Actions } from './$types';
 
-export const load = (({ cookies }) => {
+export const load = (({ cookies, request }) => {
 	const game = new Game(cookies.get('sverdle'));
+	const { headers:headerObj } = request;
+	// convert headers to a plain object
+	const headers: Record<string, string>[] = [];
+	for (const [key, value] of headerObj.entries()) {
+		headers.push({key, value});
+	}
 
 	return {
 		/**
 		 * The player's guessed words so far
 		 */
 		guesses: game.guesses,
+
+		headers: headers,
 
 		/**
 		 * An array of strings like '__x_c' corresponding to the guesses, where 'x' means
