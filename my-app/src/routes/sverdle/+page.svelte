@@ -105,7 +105,7 @@
 	}}
 >
 	<a class="how-to-play" href="/sverdle/how-to-play">How to play</a>
-
+	<h2>HEADERS</h2>
 	<ul>
 		{#each data.headers as header}
 			<li>{header.key}: {header.value}</li>
