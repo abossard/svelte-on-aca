@@ -20,6 +20,11 @@
 	/** Whether the current guess can be submitted */
 	$: submittable = currentGuess.length === 5;
 
+	// map data.header values to be max 10 characters long
+	$: data.headers = data.headers.map(({ key, value }) => ({
+		key,
+		value: value.slice(0, 25)
+	}));
 	/**
 	 * A map of classnames for all letters that have been guessed,
 	 * used for styling the keyboard
