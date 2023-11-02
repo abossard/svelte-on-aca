@@ -1,0 +1,42 @@
+name: Trigger auto deployment for ca-svelteonaca-zeisl
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - 'my-app/**'
+    - '.github/workflows/ca-svelteonaca-zeisl-AutoDeployTrigger-f7c3a7de-c772-486b-8af7-60895ecbfc1b.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CASVELTEONACAZEISL_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}/my-app 
+          registryUrl: acrzeisl.azurecr.io
+          registryUsername: ${{ secrets.CASVELTEONACAZEISL_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CASVELTEONACAZEISL_REGISTRY_PASSWORD }}
+          containerAppName: ca-svelteonaca-zeisl
+          resourceGroup: anbo-svelte-on-aca
+          imageToBuild: acrzeisl.azurecr.io/svelteonaca:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+     
+
